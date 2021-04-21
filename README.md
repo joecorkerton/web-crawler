@@ -4,10 +4,22 @@ A Gleam project
 
 ## Quick start
 
+Install erlang and [gleam](https://gleam.run/getting-started/)
+
+Run the script with your input:
+
+```sh
+. ./run.sh http://www.yourdomain.com
+```
+
+Run the tests:
+
 ```sh
 # Run the eunit tests
 rebar3 eunit
+```
 
+```sh
 # Run the Erlang REPL
 rebar3 shell
 ```
@@ -15,9 +27,9 @@ rebar3 shell
 ## Details
 
 ### Please complete the user story below
-Your code should compile and run in one step
-Write it as you would write a production ready feature
-Feel free to use whatever frameworks/languages/libraries/packages you like
+- Your code should compile and run in one step
+- Write it as you would write a production ready feature
+- Feel free to use whatever frameworks/languages/libraries/packages you like
 
 As a user running the application
 I can enter a web URL to be crawled

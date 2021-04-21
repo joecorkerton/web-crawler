@@ -1,5 +1,5 @@
 {"1.2.0",
-[{<<"gleam_http">>,{pkg,<<"gleam_http">>,<<"2.0.0">>},1},
+[{<<"gleam_http">>,{pkg,<<"gleam_http">>,<<"2.0.0">>},0},
  {<<"gleam_httpc">>,{pkg,<<"gleam_httpc">>,<<"1.0.1">>},0},
  {<<"gleam_otp">>,{pkg,<<"gleam_otp">>,<<"0.1.0">>},0},
  {<<"gleam_stdlib">>,{pkg,<<"gleam_stdlib">>,<<"0.14.0">>},0}]}.
