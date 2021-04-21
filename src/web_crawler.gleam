@@ -1,16 +1,21 @@
+import request
 import gleam/io
 import gleam/list
 
 pub external type CharList
 
-pub fn hello_world() -> String {
-  "Hello, from web_crawler!"
-}
-
 pub fn main(input: List(CharList)) {
-  let args = list.map(input, char_list_to_string)
+  case list.head(input) {
+    Ok(char_list) -> {
+      let url = char_list_to_string(char_list)
+      True
+    }
+    Error(Nil) -> {
+      io.println("You need to provide a domain to crawl")
+      False
+    }
+  }
 
-  io.debug(args)
   io.println("nice")
 }
 

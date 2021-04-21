@@ -1,7 +1,7 @@
 import web_crawler
 import gleam/should
+import gleam/string
 
-pub fn hello_world_test() {
-  web_crawler.hello_world()
-  |> should.equal("Hello, from web_crawler!")
+pub fn get_test() {
+  True
 }
