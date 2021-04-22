@@ -2,7 +2,6 @@
  [{description, "A Gleam project"},
   {vsn, "1.0.0"},
   {registered, []},
-  {mod, {web_crawler@application, []}},
   {applications,
    [kernel,
     stdlib,
