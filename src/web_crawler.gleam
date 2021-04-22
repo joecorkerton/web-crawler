@@ -3,10 +3,14 @@ import gleam/io
 import gleam/list
 import gleam/set.{Set}
 import gleam/result
+import gleam/dynamic.{Dynamic}
+import gleam/atom.{Atom}
+import gleam/string
 
 pub external type CharList
 
 pub fn main(input: List(CharList)) {
+  start_application_and_deps(atom.create_from_string("web_crawler"))
   case list.head(input) {
     Ok(char_list) -> {
       let parsed_url =
@@ -21,16 +25,18 @@ pub fn main(input: List(CharList)) {
   }
 }
 
-external fn char_list_to_string(CharList) -> String =
-  "erlang" "list_to_binary"
-
 fn build_sitemap(initial_url: Url) -> Nil {
   let uncrawled_links =
     [url.to_link(initial_url)]
     |> set.from_list()
-  iterate_through_links(initial_url, set.new(), uncrawled_links)
-  |> io.debug()
-  io.println("Done")
+  initial_url
+  |> iterate_through_links(set.new(), uncrawled_links)
+  |> set.to_list()
+  |> list.each(fn(url) {
+    url
+    |> url.to_output()
+    |> io.println()
+  })
 }
 
 fn iterate_through_links(
@@ -59,16 +65,41 @@ fn iterate_through_links(
             |> result.map(fn(body) { url.extract_links_from_body(body) })
             |> result.unwrap(or: [])
             |> set.from_list()
-          let new_url =
+          let new_url_set =
             [url.set_links(new_url, set.to_list(new_uncrawled_links))]
             |> set.from_list()
+          io.println(string.append("processed url ", url.to_link(new_url)))
+          let new_crawled_urls = set.union(crawled_urls, new_url_set)
           iterate_through_links(
             initial_url,
-            set.union(crawled_urls, new_url),
-            set.union(uncrawled_links, new_uncrawled_links),
+            new_crawled_urls,
+            uncrawled_links
+            |> set.union(new_uncrawled_links)
+            |> remove_already_crawled_urls_from_links(new_crawled_urls),
           )
         }
       }
     }
   }
 }
+
+fn remove_already_crawled_urls_from_links(
+  links: Set(String),
+  crawled_urls: Set(Url),
+) -> Set(String) {
+  crawled_urls
+  |> set.to_list()
+  |> list.map(fn(url) { url.to_link(url) })
+  |> list.fold(
+    from: links,
+    with: fn(crawled_url, uncrawled_links) {
+      set.delete(uncrawled_links, crawled_url)
+    },
+  )
+}
+
+external fn char_list_to_string(CharList) -> String =
+  "erlang" "list_to_binary"
+
+external fn start_application_and_deps(Atom) -> Dynamic =
+  "application" "ensure_all_started"

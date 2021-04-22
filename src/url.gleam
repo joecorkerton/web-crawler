@@ -6,23 +6,24 @@ import gleam/string
 import gleam/string_builder
 import gleam/result
 import gleam/regex.{Match}
+import gleam/pair
 
 pub opaque type Url {
   Url(host: String, path: String, links: Set(String))
 }
 
 pub fn parse(input: String) -> Result(Url, String) {
-  case string.contains(input, contain: "://") {
-    True -> {
-      let [_, body] = string.split(input, on: "://")
-      case string.split_once(body, on: "/"), body {
-        Ok(tuple(host, path)), _ -> Ok(Url(host, path, set.new()))
-        Error(Nil), "" -> Error("Bad input string")
-        Error(Nil), _ -> Ok(Url(body, "", set.new()))
-      }
+  input
+  |> string.split_once("://")
+  |> result.then(fn(result: tuple(String, String)) {
+    let body = pair.second(result)
+    case string.split_once(body, on: "/"), body {
+      Ok(tuple(host, path)), _ -> Ok(Url(host, path, set.new()))
+      Error(Nil), "" -> Error(Nil)
+      Error(Nil), _ -> Ok(Url(body, "", set.new()))
     }
-    False -> Error("Bad input string")
-  }
+  })
+  |> result.replace_error("Bad input string")
 }
 
 pub fn parse_sublink(original_url: Url, input: String) -> Result(Url, String) {

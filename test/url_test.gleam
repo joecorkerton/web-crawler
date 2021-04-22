@@ -25,6 +25,11 @@ pub fn parse_with_bad_input_test() {
   |> should.be_error()
 }
 
+pub fn parse_with_strange_input_test() {
+  url.parse("https://gitpod.io/#https://github.com/codec-abc/gitpod-gleam")
+  |> should.be_ok()
+}
+
 pub fn set_links_test() {
   let Ok(url) = url.parse(elixir_url)
 
