@@ -4,7 +4,6 @@
 *.plt
 *.swo
 *.swp
-*.src
 *~
 .erlang.cookie
 .eunit

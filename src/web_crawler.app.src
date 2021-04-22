@@ -1,0 +1,18 @@
+{application, web_crawler,
+ [{description, "A Gleam project"},
+  {vsn, "1.0.0"},
+  {registered, []},
+  {mod, {web_crawler@application, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    gleam_stdlib,
+    gleam_http,
+    gleam_httpc
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {include_files, ["gleam.toml", "gen"]},
+  {links, []}
+]}.
